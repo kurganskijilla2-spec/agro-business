@@ -4,44 +4,127 @@ cat << 'EOF' > index.html
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>АгроБизнес — Всё о земледелии, технике и рентабельности</title>
+    <title>АгроБизнес Pro — Справочник, калькуляторы и журнал фермера</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
         <h1>АгроБизнес Pro</h1>
-        <p>Практический портал для фермеров: нишевые культуры, расчет прибыли и техника</p>
+        <p>Практический портал для фермеров: нишевые культуры, расчеты и учет</p>
+        <nav class="tabs">
+            <button class="tab-btn active" onclick="openTab('crops', this)">🌱 Культуры</button>
+            <button class="tab-btn" onclick="openTab('calc', this)">🧮 Калькуляторы</button>
+            <button class="tab-btn" onclick="openTab('tech', this)">🚜 Техника и ТО</button>
+            <button class="tab-btn" onclick="openTab('notes', this)">📓 Агро-журнал</button>
+        </nav>
     </header>
 
     <main>
-        <section id="directions">
-            <h2>Прибыльные направления</h2>
-            <div class="cards">
-                <div class="card">
+        <!-- ВКЛАДКА 1: КУЛЬТУРЫ -->
+        <section id="crops" class="tab-content active">
+            <div class="section-header">
+                <h2>База культур и нормы</h2>
+                <input type="text" id="searchCrop" placeholder="Поиск культуры (например: тыква, пшеница)..." onkeyup="filterCrops()">
+            </div>
+            <div class="cards" id="cropCards">
+                <div class="card crop-item">
+                    <span class="badge">Высокая маржа</span>
                     <h3>Тыква на семечку (сорт Ольга и др.)</h3>
-                    <p>Высокая маржинальность на малых площадях (от 3 га). Низкие требования к поливу, стабильный спрос на экспорт.</p>
+                    <p><strong>Норма высева:</strong> 4–5 кг/га (схема 70×70 или 140×70 см).</p>
+                    <p><strong>Урожайность:</strong> 700–1100 кг сухой семечки с 1 га.</p>
+                    <p><strong>Нюанс:</strong> Критически важна своевременная сушка после комбайна, чтобы семечка не потемнела.</p>
                 </div>
-                <div class="card">
-                    <h3>Зерновые и масличные</h3>
-                    <p>Классический севооборот: пшеница, ячмень, подсолнечник. Требует отлаженной логистики и хранения.</p>
+                <div class="card crop-item">
+                    <span class="badge">Классика</span>
+                    <h3>Подсолнечник</h3>
+                    <p><strong>Норма высева:</strong> 55–65 тыс. семян/га (около 4–6 кг/га).</p>
+                    <p><strong>Урожайность:</strong> 20–32 ц/га.</p>
+                    <p><strong>Нюанс:</strong> Возвращать на то же поле не раньше чем через 6–7 лет из-за заразихи и болезней.</p>
                 </div>
-                <div class="card">
-                    <h3>Техника и агрегаты</h3>
-                    <p>Подбор тракторов, культиваторов и сеялок под конкретную площадь. Оптимизация расхода ГСМ.</p>
+                <div class="card crop-item">
+                    <span class="badge">Севооборот</span>
+                    <h3>Озимая пшеница</h3>
+                    <p><strong>Норма высева:</strong> 180–220 кг/га.</p>
+                    <p><strong>Урожайность:</strong> 40–60 ц/га.</p>
+                    <p><strong>Нюанс:</strong> Отличный предшественник для бахчевых и пропашных культур, хорошо очищает поле от сорняков.</p>
+                </div>
+                <div class="card crop-item">
+                    <span class="badge">Кормовая / Зерновая</span>
+                    <h3>Яровой ячмень</h3>
+                    <p><strong>Норма высева:</strong> 160–200 кг/га.</p>
+                    <p><strong>Урожайность:</strong> 30–45 ц/га.</p>
+                    <p><strong>Нюанс:</strong> Короткий период вегетации, ранняя уборка позволяет успеть провести зяблевую вспашку или культивацию.</p>
                 </div>
             </div>
         </section>
 
-        <section id="calculator">
-            <h2>Калькулятор рентабельности гектара</h2>
-            <div class="calc-box">
-                <label>Площадь (га): <input type="number" id="area" value="3"></label>
-                <label>Затраты на 1 га (ГСМ, семена, работа): <input type="number" id="cost" value="15000"></label>
-                <label>Урожайность с 1 га (кг): <input type="number" id="yield" value="800"></label>
-                <label>Цена реализации за 1 кг: <input type="number" id="price" value="85"></label>
-                <button onclick="calculate()">Рассчитать прибыль</button>
-                <h3 id="result">Чистая прибыль: 159 000</h3>
+        <!-- ВКЛАДКА 2: КАЛЬКУЛЯТОРЫ -->
+        <section id="calc" class="tab-content">
+            <h2>Агро-калькуляторы</h2>
+            <div class="calc-grid">
+                <div class="calc-box">
+                    <h3>💰 Рентабельность гектара</h3>
+                    <label>Площадь (га): <input type="number" id="area" value="3"></label>
+                    <label>Затраты на 1 га (ГСМ, семена, работа): <input type="number" id="cost" value="15000"></label>
+                    <label>Урожайность с 1 га (кг): <input type="number" id="yield" value="800"></label>
+                    <label>Цена реализации за 1 кг: <input type="number" id="price" value="85"></label>
+                    <button onclick="calculateProfit()">Рассчитать прибыль</button>
+                    <div class="result-box" id="profitResult">Чистая прибыль: 159 000</div>
+                </div>
+
+                <div class="calc-box">
+                    <h3>🌾 Расход семян и топлива (ГСМ)</h3>
+                    <label>Площадь участка (га): <input type="number" id="seedArea" value="3"></label>
+                    <label>Норма высева (кг/га): <input type="number" id="seedRate" value="4.5" step="0.1"></label>
+                    <label>Запас на пересев (%): <input type="number" id="seedReserve" value="10"></label>
+                    <label>Расход ДТ на цикл работ (л/га): <input type="number" id="fuelRate" value="35"></label>
+                    <button onclick="calculateResources()">Рассчитать ресурсы</button>
+                    <div class="result-box" id="resourceResult">Нужно семян: 14.9 кг | Дизтоплива: 105 л</div>
+                </div>
             </div>
+        </section>
+
+        <!-- ВКЛАДКА 3: ТЕХНИКА И ТО -->
+        <section id="tech" class="tab-content">
+            <h2>Подготовка техники и агрегатов</h2>
+            <div class="cards">
+                <div class="card">
+                    <h3>Трактор и мини-трактор</h3>
+                    <ul class="checklist">
+                        <li><input type="checkbox"> Замена моторного масла и фильтров перед сезоном</li>
+                        <li><input type="checkbox"> Проверка уровня масла в гидравлике и КПП</li>
+                        <li><input type="checkbox"> Протяжка колесных болтов и проверка давления в шинах</li>
+                        <li><input type="checkbox"> Шприцевание крестовин, рулевых тяг и навески</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Культиватор и почвообработка</h3>
+                    <ul class="checklist">
+                        <li><input type="checkbox"> Проверка износа стрельчатых лап и стоек</li>
+                        <li><input type="checkbox"> Выставление рамы по горизонту на ровной площадке</li>
+                        <li><input type="checkbox"> Смазка подшипников опорных колес и катков</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Прицеп и логистика урожая</h3>
+                    <ul class="checklist">
+                        <li><input type="checkbox"> Проверка ступичных подшипников и тормозной системы</li>
+                        <li><input type="checkbox"> Герметичность бортов (особенно для мелкого зерна и семечки)</li>
+                        <li><input type="checkbox"> Исправность светотехники и страховочных цепей</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ВКЛАДКА 4: АГРО-ЖУРНАЛ -->
+        <section id="notes" class="tab-content">
+            <h2>Журнал работ и расходов</h2>
+            <p class="subtitle">Записи сохраняются в памяти вашего браузера.</p>
+            <div class="note-form">
+                <input type="text" id="noteText" placeholder="Например: Культивация 3 га — ушло 25 л ДТ...">
+                <button onclick="addNote()">Добавить запись</button>
+            </div>
+            <ul id="notesList" class="notes-list"></ul>
         </section>
     </main>
 
@@ -49,4 +132,3 @@ cat << 'EOF' > index.html
 </body>
 </html>
 EOF
-

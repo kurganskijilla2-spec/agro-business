@@ -1,11 +1,54 @@
 cat << 'EOF' > style.css
-body { font-family: system-ui, sans-serif; margin: 0; background: #f4f7f4; color: #1e291e; line-height: 1.6; }
-header { background: #2d5a27; color: white; padding: 2rem 1rem; text-align: center; }
-main { max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
-.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; }
-.card { background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-.calc-box { background: white; padding: 1.5rem; border-radius: 8px; display: flex; flex-direction: column; gap: 0.8rem; max-width: 400px; }
-input { width: 100%; padding: 0.5rem; margin-top: 0.2rem; box-sizing: border-box; }
-button { background: #2d5a27; color: white; border: none; padding: 0.8rem; border-radius: 5px; cursor: pointer; font-weight: bold; }
-button:hover { background: #23471e; }
+:root {
+    --primary: #2d5a27;
+    --primary-dark: #1f401b;
+    --accent: #e6a817;
+    --bg: #f3f6f2;
+    --card-bg: #ffffff;
+    --text: #1c261b;
+}
+
+body { font-family: system-ui, -apple-system, sans-serif; margin: 0; background: var(--bg); color: var(--text); line-height: 1.6; }
+header { background: var(--primary); color: white; padding: 2rem 1rem 0; text-align: center; }
+header h1 { margin: 0; font-size: 2rem; }
+header p { margin: 0.5rem 0 1.5rem; opacity: 0.9; }
+
+.tabs { display: flex; justify-content: center; gap: 0.5rem; flex-wrap: wrap; max-width: 960px; margin: 0 auto; }
+.tab-btn { background: rgba(255,255,255,0.12); color: white; border: none; padding: 0.8rem 1.2rem; border-radius: 8px 8px 0 0; cursor: pointer; font-size: 1rem; font-weight: 600; transition: 0.2s; }
+.tab-btn:hover { background: rgba(255,255,255,0.25); }
+.tab-btn.active { background: var(--bg); color: var(--primary); }
+
+main { max-width: 960px; margin: 2rem auto; padding: 0 1rem; }
+.tab-content { display: none; animation: fadeIn 0.25s ease; }
+.tab-content.active { display: block; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+.section-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; }
+.section-header h2 { margin: 0; }
+#searchCrop { max-width: 340px; padding: 0.6rem 0.9rem; border: 1px solid #cbd5c9; border-radius: 6px; font-size: 0.95rem; }
+
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 1.2rem; }
+.card { background: var(--card-bg); padding: 1.5rem; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); position: relative; }
+.card h3 { margin-top: 0.4rem; color: var(--primary-dark); }
+.badge { display: inline-block; background: #e3f1e1; color: var(--primary); font-size: 0.78rem; font-weight: bold; padding: 0.2rem 0.6rem; border-radius: 4px; }
+
+.calc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+.calc-box { background: var(--card-bg); padding: 1.5rem; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); display: flex; flex-direction: column; gap: 0.8rem; }
+.calc-box h3 { margin: 0 0 0.4rem; color: var(--primary-dark); }
+input[type="number"], input[type="text"] { width: 100%; padding: 0.55rem; margin-top: 0.25rem; border: 1px solid #cbd5c9; border-radius: 6px; box-sizing: border-box; font-size: 1rem; }
+button { background: var(--primary); color: white; border: none; padding: 0.8rem 1.2rem; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 0.95rem; }
+button:hover { background: var(--primary-dark); }
+.result-box { background: #eef6ed; border-left: 4px solid var(--primary); padding: 0.8rem; font-weight: bold; border-radius: 4px; margin-top: 0.3rem; }
+
+.checklist { list-style: none; padding: 0; margin: 0; }
+.checklist li { padding: 0.5rem 0; border-bottom: 1px solid #eef2ed; display: flex; align-items: center; gap: 0.6rem; }
+.checklist li:last-child { border-bottom: none; }
+
+.note-form { display: flex; gap: 0.6rem; margin-bottom: 1.2rem; }
+.note-form input { margin-top: 0; }
+.notes-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.6rem; }
+.notes-list li { background: white; padding: 0.9rem 1.2rem; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 1px 4px rgba(0,0,0,0.05); }
+.del-btn { background: #c93b3b; padding: 0.4rem 0.7rem; font-size: 0.85rem; }
+.del-btn:hover { background: #a62c2c; }
 EOF
