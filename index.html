@@ -1,0 +1,52 @@
+cat << 'EOF' > index.html
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>АгроБизнес — Всё о земледелии, технике и рентабельности</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>АгроБизнес Pro</h1>
+        <p>Практический портал для фермеров: нишевые культуры, расчет прибыли и техника</p>
+    </header>
+
+    <main>
+        <section id="directions">
+            <h2>Прибыльные направления</h2>
+            <div class="cards">
+                <div class="card">
+                    <h3>Тыква на семечку (сорт Ольга и др.)</h3>
+                    <p>Высокая маржинальность на малых площадях (от 3 га). Низкие требования к поливу, стабильный спрос на экспорт.</p>
+                </div>
+                <div class="card">
+                    <h3>Зерновые и масличные</h3>
+                    <p>Классический севооборот: пшеница, ячмень, подсолнечник. Требует отлаженной логистики и хранения.</p>
+                </div>
+                <div class="card">
+                    <h3>Техника и агрегаты</h3>
+                    <p>Подбор тракторов, культиваторов и сеялок под конкретную площадь. Оптимизация расхода ГСМ.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="calculator">
+            <h2>Калькулятор рентабельности гектара</h2>
+            <div class="calc-box">
+                <label>Площадь (га): <input type="number" id="area" value="3"></label>
+                <label>Затраты на 1 га (ГСМ, семена, работа): <input type="number" id="cost" value="15000"></label>
+                <label>Урожайность с 1 га (кг): <input type="number" id="yield" value="800"></label>
+                <label>Цена реализации за 1 кг: <input type="number" id="price" value="85"></label>
+                <button onclick="calculate()">Рассчитать прибыль</button>
+                <h3 id="result">Чистая прибыль: 159 000</h3>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
+EOF
+
