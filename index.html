@@ -1,4 +1,5 @@
 
+cat << 'EOF' > index.html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -265,7 +266,6 @@
 
         <!-- ВКЛАДКА 5: ПРОЕКТЫ, ОПЫТ И АГРО-РУЛЕТКА -->
         <section id="projects" class="tab-content">
-            <!-- Агро-рулетка нишевых идей -->
             <div class="roulette-box">
                 <div class="roulette-head">
                     <div>
@@ -315,6 +315,37 @@
             <ul id="notesList" class="notes-list"></ul>
         </section>
     </main>
+
+    <!-- Чат поддержки с автоответами и контактом 0639429569 -->
+    <div class="support-widget">
+        <button type="button" class="support-fab" id="supportFabBtn" onclick="toggleSupportChat()">💬 Поддержка</button>
+        <div class="support-drawer" id="supportDrawer">
+            <div class="support-header">
+                <div>
+                    <strong>Чат поддержки АгроБизнес Pro</strong>
+                    <div class="support-phone-row">
+                        <span>Тел: <a href="tel:+380639429569">0639429569</a></span>
+                        <button type="button" class="support-copy-btn" onclick="copySupportPhone()">Копировать</button>
+                    </div>
+                </div>
+                <button type="button" class="support-close-btn" onclick="toggleSupportChat()">✕</button>
+            </div>
+
+            <div class="support-quick-chips">
+                <button type="button" class="support-chip" onclick="sendQuickSupport('Как посчитать прибыль и стресс-тест?')">Калькулятор</button>
+                <button type="button" class="support-chip" onclick="sendQuickSupport('Нормы высева и тыква на семечку')">Культуры и высев</button>
+                <button type="button" class="support-chip" onclick="sendQuickSupport('Бюджетный трактор и запчасти')">Тракторы и запчасти</button>
+                <button type="button" class="support-chip" onclick="sendQuickSupport('Связаться по телефону')">Позвонить / Связь</button>
+            </div>
+
+            <div class="support-messages" id="supportMessages"></div>
+
+            <form class="support-form" onsubmit="handleSupportSubmit(event)">
+                <input type="text" id="supportInput" placeholder="Напиши вопрос..." autocomplete="off">
+                <button type="submit">Отправить</button>
+            </form>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>

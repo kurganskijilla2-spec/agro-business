@@ -435,9 +435,91 @@ function deleteNote(index) {
     renderNotes();
 }
 
+// --- ЧАТ ПОДДЕРЖКИ С АВТООТВЕТАМИ И КОНТАКТОМ 0639429569 ---
+const SUPPORT_PHONE = '0639429569';
+let supportHistory = JSON.parse(localStorage.getItem('agroSupportChat')) || [
+    {
+        sender: 'bot',
+        text: `Привет! Это автопомощник АгроБизнес Pro. Задай вопрос по культурам, калькуляторам, технике или нажми кнопку связи — телефон для связи: ${SUPPORT_PHONE}.`
+    }
+];
+
+function toggleSupportChat() {
+    const drawer = document.getElementById('supportDrawer');
+    if (drawer) {
+        drawer.classList.toggle('open');
+        renderSupportMessages();
+    }
+}
+
+function copySupportPhone() {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(SUPPORT_PHONE).catch(() => {});
+    }
+    pushSupportMessage('bot', `Номер ${SUPPORT_PHONE} скопирован. Также можно позвонить по ссылке tel:+38${SUPPORT_PHONE}.`);
+}
+
+function getAutoReply(userText) {
+    const q = userText.toLowerCase();
+    if (q.includes('телефон') || q.includes('позвон') || q.includes('связ') || q.includes('номер') || q.includes('контакт')) {
+        return `Прямой номер для связи: ${SUPPORT_PHONE} (нажмите на номер в шапке чата для вызова).`;
+    }
+    if (q.includes('калькулятор') || q.includes('прибыл') || q.includes('стресс') || q.includes('семян') || q.includes('топлив') || q.includes('дт')) {
+        return `Во вкладке «Калькуляторы» можно посчитать прибыль с учётом стресс-теста («Засуха», «Обвал цены», «Жёсткий шторм»), а также расход семян и дизтоплива. По вопросам расчётов звоните: ${SUPPORT_PHONE}.`;
+    }
+    if (q.includes('тыкв') || q.includes('культур') || q.includes('высев') || q.includes('пшениц') || q.includes('ячмен') || q.includes('подсолнеч')) {
+        return `Во вкладке «Культуры» собраны нормы высева, урожайность и нюансы по тыкве на семечку, подсолнечнику, пшенице и ячменю. Нужна консультация? Тел: ${SUPPORT_PHONE}.`;
+    }
+    if (q.includes('трактор') || q.includes('запчаст') || q.includes('ремн') || q.includes('гидравл') || q.includes('навеск') || q.includes('то')) {
+        return `Смотри вкладку «Бюджетные тракторы и запчасти» и чек-лист «Техника и ТО» (галочки повышают процент готовности к сезону). Для связи по технике: ${SUPPORT_PHONE}.`;
+    }
+    if (q.includes('проект') || q.includes('рулетк') || q.includes('аккаунт') || q.includes('почт') || q.includes('гараж')) {
+        return `Во вкладке «Проекты и Опыт» есть Агро-рулетка идей и стена кейсов/факапов, вверху — переключатель «Гараж / Ночь» и вход по почте. Если нужна помощь напрямую — ${SUPPORT_PHONE}.`;
+    }
+    return `Принял сообщение! Если нужен быстрый ответ или обсудить детали лично — свяжитесь по телефону ${SUPPORT_PHONE}.`;
+}
+
+function pushSupportMessage(sender, text) {
+    supportHistory.push({ sender, text });
+    if (supportHistory.length > 40) supportHistory = supportHistory.slice(-40);
+    localStorage.setItem('agroSupportChat', JSON.stringify(supportHistory));
+    renderSupportMessages();
+}
+
+function renderSupportMessages() {
+    const box = document.getElementById('supportMessages');
+    if (!box) return;
+    box.innerHTML = '';
+    supportHistory.forEach(msg => {
+        const div = document.createElement('div');
+        div.className = `support-msg ${msg.sender === 'user' ? 'user' : 'bot'}`;
+        div.innerText = msg.text;
+        box.appendChild(div);
+    });
+    box.scrollTop = box.scrollHeight;
+}
+
+function sendQuickSupport(text) {
+    pushSupportMessage('user', text);
+    const reply = getAutoReply(text);
+    setTimeout(() => pushSupportMessage('bot', reply), 220);
+}
+
+function handleSupportSubmit(event) {
+    event.preventDefault();
+    const input = document.getElementById('supportInput');
+    const text = input.value.trim();
+    if (!text) return;
+    input.value = '';
+    pushSupportMessage('user', text);
+    const reply = getAutoReply(text);
+    setTimeout(() => pushSupportMessage('bot', reply), 220);
+}
+
 applySavedTheme();
 renderAuthPanel();
 renderProjects();
 loadNotesForUser();
 loadChecklist();
+renderSupportMessages();
 
