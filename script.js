@@ -1,4 +1,4 @@
-cat << 'EOF' > script.js
+
 // Переключение вкладок
 function openTab(tabId, btn) {
     document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
@@ -11,6 +11,15 @@ function openTab(tabId, btn) {
 function filterCrops() {
     const query = document.getElementById('searchCrop').value.toLowerCase();
     document.querySelectorAll('.crop-item').forEach(card => {
+        const text = card.innerText.toLowerCase();
+        card.style.display = text.includes(query) ? 'block' : 'none';
+    });
+}
+
+// Поиск по бюджетным тракторам и комплектующим
+function filterTractors() {
+    const query = document.getElementById('searchTractor').value.toLowerCase();
+    document.querySelectorAll('.tractor-item').forEach(card => {
         const text = card.innerText.toLowerCase();
         card.style.display = text.includes(query) ? 'block' : 'none';
     });
@@ -77,4 +86,4 @@ function deleteNote(index) {
 }
 
 renderNotes();
-EOF
+
