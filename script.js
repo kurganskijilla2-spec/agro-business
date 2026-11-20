@@ -54,7 +54,115 @@ function calculateResources() {
         `Нужно семян: ${totalSeeds.toFixed(1)} кг | Дизтоплива: ${totalFuel.toFixed(0)} л`;
 }
 
-// Проекты сообщества (localStorage)
+function escapeHtml(str) {
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+}
+
+// --- АККАУНТЫ ПО ПОЧТЕ (локальное хранилище браузера) ---
+let authMode = 'login';
+let users = JSON.parse(localStorage.getItem('agroUsers')) || [];
+let currentUser = JSON.parse(localStorage.getItem('agroCurrentUser')) || null;
+
+function openAuthModal(mode) {
+    authMode = mode;
+    document.getElementById('authError').innerText = '';
+    document.getElementById('authPassword').value = '';
+    syncAuthModalUI();
+    document.getElementById('authModal').classList.add('open');
+}
+
+function closeAuthModal() {
+    document.getElementById('authModal').classList.remove('open');
+}
+
+function toggleAuthMode() {
+    authMode = authMode === 'login' ? 'register' : 'login';
+    document.getElementById('authError').innerText = '';
+    syncAuthModalUI();
+}
+
+function syncAuthModalUI() {
+    const isRegister = authMode === 'register';
+    document.getElementById('authTitle').innerText = isRegister ? 'Создание аккаунта' : 'Вход по почте';
+    document.getElementById('nameFieldWrap').style.display = isRegister ? 'block' : 'none';
+    document.getElementById('authSubmitBtn').innerText = isRegister ? 'Зарегистрироваться' : 'Войти';
+    document.getElementById('authSwitchText').innerText = isRegister ? 'Уже есть аккаунт?' : 'Нет аккаунта?';
+    document.getElementById('authSwitchBtn').innerText = isRegister ? 'Войти' : 'Зарегистрироваться';
+}
+
+function handleAuthSubmit(event) {
+    event.preventDefault();
+    const email = document.getElementById('authEmail').value.trim().toLowerCase();
+    const password = document.getElementById('authPassword').value;
+    const nameInput = document.getElementById('authName').value.trim();
+    const errorEl = document.getElementById('authError');
+
+    if (!email || !password) return;
+
+    if (authMode === 'register') {
+        const exists = users.some(u => u.email === email);
+        if (exists) {
+            errorEl.innerText = 'Аккаунт с такой почтой уже зарегистрирован.';
+            return;
+        }
+        const displayName = nameInput || email.split('@')[0];
+        const newUser = { name: displayName, email, password };
+        users.push(newUser);
+        localStorage.setItem('agroUsers', JSON.stringify(users));
+        currentUser = { name: newUser.name, email: newUser.email };
+        localStorage.setItem('agroCurrentUser', JSON.stringify(currentUser));
+        closeAuthModal();
+        onUserChanged();
+    } else {
+        const found = users.find(u => u.email === email && u.password === password);
+        if (!found) {
+            errorEl.innerText = 'Неверная почта или пароль (если аккаунта ещё нет — нажмите «Зарегистрироваться»).';
+            return;
+        }
+        currentUser = { name: found.name, email: found.email };
+        localStorage.setItem('agroCurrentUser', JSON.stringify(currentUser));
+        closeAuthModal();
+        onUserChanged();
+    }
+}
+
+function logoutUser() {
+    currentUser = null;
+    localStorage.removeItem('agroCurrentUser');
+    onUserChanged();
+}
+
+function renderAuthPanel() {
+    const panel = document.getElementById('authPanel');
+    const authorInput = document.getElementById('projAuthor');
+    if (!panel) return;
+
+    if (currentUser) {
+        panel.innerHTML = `
+            <span class="user-badge">👤 ${escapeHtml(currentUser.name)} (${escapeHtml(currentUser.email)})</span>
+            <button class="auth-btn auth-btn-outline" onclick="logoutUser()">Выйти</button>
+        `;
+        if (authorInput && !authorInput.value) {
+            authorInput.value = currentUser.name;
+        }
+    } else {
+        panel.innerHTML = `
+            <button class="auth-btn" onclick="openAuthModal('login')">Войти по почте</button>
+            <button class="auth-btn auth-btn-outline" onclick="openAuthModal('register')">Создать аккаунт</button>
+        `;
+    }
+}
+
+function onUserChanged() {
+    renderAuthPanel();
+    loadNotesForUser();
+}
+
+// --- ПРОЕКТЫ СООБЩЕСТВА ---
 let projects = JSON.parse(localStorage.getItem('agroProjects')) || [
     {
         title: 'Выращивание тыквы на семечку на малых площадях',
@@ -69,14 +177,6 @@ let projects = JSON.parse(localStorage.getItem('agroProjects')) || [
         desc: 'Подбор доступных узлов, усиление навески и оптимизация расхода топлива для сезонных работ.'
     }
 ];
-
-function escapeHtml(str) {
-    return str
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;');
-}
 
 function renderProjects() {
     const list = document.getElementById('projectsList');
@@ -108,7 +208,8 @@ function addProject() {
 
     const title = titleInput.value.trim();
     const category = catInput.value.trim() || 'Общий проект';
-    const author = authorInput.value.trim() || 'Участник';
+    const defaultAuthor = currentUser ? `${currentUser.name} (${currentUser.email})` : 'Участник';
+    const author = authorInput.value.trim() || defaultAuthor;
     const desc = descInput.value.trim();
 
     if (!title || !desc) return;
@@ -116,7 +217,6 @@ function addProject() {
     projects.unshift({ title, category, author, desc });
     titleInput.value = '';
     catInput.value = '';
-    authorInput.value = '';
     descInput.value = '';
     renderProjects();
 }
@@ -135,11 +235,27 @@ function filterProjects() {
     });
 }
 
-// Агро-журнал (localStorage)
-let notes = JSON.parse(localStorage.getItem('agroNotes')) || [
-    'Подготовить семена тыквы сорт Ольга к посеву',
-    'Проверить лапы культиватора и масло в тракторе'
-];
+// --- АГРО-ЖУРНАЛ (привязан к текущему пользователю или гостю) ---
+let notes = [];
+
+function getNotesStorageKey() {
+    return currentUser ? `agroNotes_${currentUser.email}` : 'agroNotes_guest';
+}
+
+function loadNotesForUser() {
+    const hintEl = document.getElementById('notesScopeHint');
+    if (hintEl) {
+        hintEl.innerText = currentUser
+            ? `Личный журнал аккаунта ${currentUser.email} (сохраняется в этом браузере).`
+            : 'Гостевой режим: войдите по почте, чтобы вести отдельный журнал под своим аккаунтом.';
+    }
+    const saved = localStorage.getItem(getNotesStorageKey());
+    notes = saved ? JSON.parse(saved) : [
+        'Подготовить семена тыквы к посеву',
+        'Проверить лапы культиватора и масло в тракторе'
+    ];
+    renderNotes();
+}
 
 function renderNotes() {
     const list = document.getElementById('notesList');
@@ -149,7 +265,7 @@ function renderNotes() {
         li.innerHTML = `<span>${escapeHtml(note)}</span><button class="del-btn" onclick="deleteNote(${index})">Удалить</button>`;
         list.appendChild(li);
     });
-    localStorage.setItem('agroNotes', JSON.stringify(notes));
+    localStorage.setItem(getNotesStorageKey(), JSON.stringify(notes));
 }
 
 function addNote() {
@@ -166,6 +282,7 @@ function deleteNote(index) {
     renderNotes();
 }
 
+renderAuthPanel();
 renderProjects();
-renderNotes();
+loadNotesForUser();
 

@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html lang="uk">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +9,13 @@
 </head>
 <body>
     <header>
+        <div class="top-bar">
+            <div class="auth-panel" id="authPanel">
+                <button class="auth-btn" onclick="openAuthModal('login')">Войти по почте</button>
+                <button class="auth-btn auth-btn-outline" onclick="openAuthModal('register')">Создать аккаунт</button>
+            </div>
+        </div>
+
         <h1>АгроБизнес Pro</h1>
         <p>Практический портал для фермеров: нишевые культуры, расчеты и учет</p>
         <nav class="tabs">
@@ -20,6 +27,34 @@
             <button class="tab-btn" onclick="openTab('notes', this)">📓 Агро-журнал</button>
         </nav>
     </header>
+
+    <!-- Модальное окно входа / регистрации -->
+    <div class="modal-backdrop" id="authModal">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeAuthModal()">✕</button>
+            <h3 id="authTitle">Вход по почте</h3>
+            <p class="auth-hint" id="authHint">Локальный вход в браузере (для общей базы между устройствами подключается Supabase/Firebase).</p>
+            <form onsubmit="handleAuthSubmit(event)">
+                <div id="nameFieldWrap" style="display: none;">
+                    <label>Имя или хозяйство:
+                        <input type="text" id="authName" placeholder="Например: Илья / Хозяйство 3 га">
+                    </label>
+                </div>
+                <label>Электронная почта:
+                    <input type="email" id="authEmail" required placeholder="farmer@example.com">
+                </label>
+                <label>Пароль:
+                    <input type="password" id="authPassword" required minlength="4" placeholder="Минимум 4 символа">
+                </label>
+                <button type="submit" id="authSubmitBtn">Войти</button>
+            </form>
+            <div class="auth-switch">
+                <span id="authSwitchText">Нет аккаунта?</span>
+                <button type="button" class="link-btn" id="authSwitchBtn" onclick="toggleAuthMode()">Зарегистрироваться</button>
+            </div>
+            <div class="auth-error" id="authError"></div>
+        </div>
+    </div>
 
     <main>
         <!-- ВКЛАДКА 1: КУЛЬТУРЫ -->
@@ -200,7 +235,7 @@
         <!-- ВКЛАДКА 6: АГРО-ЖУРНАЛ -->
         <section id="notes" class="tab-content">
             <h2>Журнал работ и расходов</h2>
-            <p class="subtitle">Записи сохраняются в памяти вашего браузера.</p>
+            <p class="subtitle" id="notesScopeHint">Записи сохраняются в памяти вашего браузера.</p>
             <div class="note-form">
                 <input type="text" id="noteText" placeholder="Например: Культивация 3 га — ушло 25 л ДТ...">
                 <button onclick="addNote()">Добавить запись</button>
