@@ -15,9 +15,12 @@
                 <img src="images/logo.png" alt="Логотип АгроБизнес Pro" class="site-logo">
                 <span class="brand-name">АгроБизнес Pro</span>
             </div>
-            <div class="auth-panel" id="authPanel">
-                <button class="auth-btn" onclick="openAuthModal('login')">Войти по почте</button>
-                <button class="auth-btn auth-btn-outline" onclick="openAuthModal('register')">Создать аккаунт</button>
+            <div class="top-actions">
+                <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleTheme()">🌙 Гараж / Ночь</button>
+                <div class="auth-panel" id="authPanel">
+                    <button class="auth-btn" onclick="openAuthModal('login')">Войти по почте</button>
+                    <button class="auth-btn auth-btn-outline" onclick="openAuthModal('register')">Создать аккаунт</button>
+                </div>
             </div>
         </div>
 
@@ -25,7 +28,18 @@
             <img src="images/logo.png" alt="АгроБизнес Pro" class="hero-logo">
             <div>
                 <h1>АгроБизнес Pro</h1>
-                <p>Практический портал для фермеров: нишевые культуры, расчеты и учет</p>
+                <p>Практический портал для фермеров: нишевые культуры, расчеты, техника и живой опыт</p>
+            </div>
+        </div>
+
+        <!-- Прогресс-бар готовности к сезону -->
+        <div class="season-progress-wrap">
+            <div class="season-progress-head">
+                <span>🚜 Готовность к сезону</span>
+                <strong id="seasonPercentText">0%</strong>
+            </div>
+            <div class="season-bar-track">
+                <div class="season-bar-fill" id="seasonBarFill" style="width: 0%;"></div>
             </div>
         </div>
 
@@ -34,7 +48,7 @@
             <button class="tab-btn" onclick="openTab('calc', this)">🧮 Калькуляторы</button>
             <button class="tab-btn" onclick="openTab('tech', this)">🚜 Техника и ТО</button>
             <button class="tab-btn" onclick="openTab('budget-tractors', this)">🔧 Бюджетные тракторы и запчасти</button>
-            <button class="tab-btn" onclick="openTab('projects', this)">🚀 Проекты</button>
+            <button class="tab-btn" onclick="openTab('projects', this)">🚀 Проекты и Опыт</button>
             <button class="tab-btn" onclick="openTab('notes', this)">📓 Агро-журнал</button>
         </nav>
     </header>
@@ -44,7 +58,7 @@
         <div class="modal-box">
             <button class="modal-close" onclick="closeAuthModal()">✕</button>
             <h3 id="authTitle">Вход по почте</h3>
-            <p class="auth-hint" id="authHint">Локальный вход в браузере (для общей базы между устройствами подключается Supabase/Firebase).</p>
+            <p class="auth-hint" id="authHint">Локальный вход в браузере (сохраняет твой профиль и журнал).</p>
             <form onsubmit="handleAuthSubmit(event)">
                 <div id="nameFieldWrap" style="display: none;">
                     <label>Имя или хозяйство:
@@ -118,26 +132,37 @@
             </div>
         </section>
 
-        <!-- ВКЛАДКА 2: КАЛЬКУЛЯТОРЫ -->
+        <!-- ВКЛАДКА 2: КАЛЬКУЛЯТОРЫ + СТРЕСС-ТЕСТ -->
         <section id="calc" class="tab-content">
-            <h2>Агро-калькуляторы</h2>
+            <h2>Агро-калькуляторы и стресс-тест</h2>
             <div class="calc-grid">
                 <div class="calc-box">
-                    <h3>💰 Рентабельность гектара</h3>
-                    <label>Площадь (га): <input type="number" id="area" value="3"></label>
-                    <label>Затраты на 1 га (ГСМ, семена, работа): <input type="number" id="cost" value="15000"></label>
-                    <label>Урожайность с 1 га (кг): <input type="number" id="yield" value="800"></label>
-                    <label>Цена реализации за 1 кг: <input type="number" id="price" value="85"></label>
+                    <h3>💰 Рентабельность + «А что, если…»</h3>
+                    <label>Площадь (га): <input type="number" id="area" value="3" oninput="calculateProfit()"></label>
+                    <label>Затраты на 1 га (ГСМ, семена, работа): <input type="number" id="cost" value="15000" oninput="calculateProfit()"></label>
+                    <label>Урожайность с 1 га (кг): <input type="number" id="yield" value="800" oninput="calculateProfit()"></label>
+                    <label>Цена реализации за 1 кг: <input type="number" id="price" value="85" oninput="calculateProfit()"></label>
+
+                    <div class="stress-panel">
+                        <span class="stress-title">⚡ Стресс-тест сценария:</span>
+                        <div class="stress-buttons">
+                            <button type="button" class="mini-btn" onclick="applyStress('normal')">Базовый</button>
+                            <button type="button" class="mini-btn warn" onclick="applyStress('drought')">Засуха (-25% урожая)</button>
+                            <button type="button" class="mini-btn warn" onclick="applyStress('priceDrop')">Обвал цены (-20%)</button>
+                            <button type="button" class="mini-btn danger" onclick="applyStress('hard')">Жёсткий шторм</button>
+                        </div>
+                    </div>
+
                     <button onclick="calculateProfit()">Рассчитать прибыль</button>
                     <div class="result-box" id="profitResult">Чистая прибыль: 159 000</div>
                 </div>
 
                 <div class="calc-box">
                     <h3>🌾 Расход семян и топлива (ГСМ)</h3>
-                    <label>Площадь участка (га): <input type="number" id="seedArea" value="3"></label>
-                    <label>Норма высева (кг/га): <input type="number" id="seedRate" value="4.5" step="0.1"></label>
-                    <label>Запас на пересев (%): <input type="number" id="seedReserve" value="10"></label>
-                    <label>Расход ДТ на цикл работ (л/га): <input type="number" id="fuelRate" value="35"></label>
+                    <label>Площадь участка (га): <input type="number" id="seedArea" value="3" oninput="calculateResources()"></label>
+                    <label>Норма высева (кг/га): <input type="number" id="seedRate" value="4.5" step="0.1" oninput="calculateResources()"></label>
+                    <label>Запас на пересев (%): <input type="number" id="seedReserve" value="10" oninput="calculateResources()"></label>
+                    <label>Расход ДТ на цикл работ (л/га): <input type="number" id="fuelRate" value="35" oninput="calculateResources()"></label>
                     <button onclick="calculateResources()">Рассчитать ресурсы</button>
                     <div class="result-box" id="resourceResult">Нужно семян: 14.9 кг | Дизтоплива: 105 л</div>
                 </div>
@@ -146,31 +171,35 @@
 
         <!-- ВКЛАДКА 3: ТЕХНИКА И ТО -->
         <section id="tech" class="tab-content">
-            <h2>Подготовка техники и агрегатов</h2>
-            <div class="cards">
+            <div class="section-header">
+                <h2>Подготовка техники и агрегатов</h2>
+                <button type="button" class="mini-btn" onclick="resetChecklist()">Сбросить галочки</button>
+            </div>
+            <p class="subtitle">Отмеченные пункты сохраняются и повышают общий процент готовности к сезону в шапке сайта.</p>
+            <div class="cards" id="techChecklistContainer">
                 <div class="card">
                     <h3>Трактор и мини-трактор</h3>
                     <ul class="checklist">
-                        <li><input type="checkbox"> Замена моторного масла и фильтров перед сезоном</li>
-                        <li><input type="checkbox"> Проверка уровня масла в гидравлике и КПП</li>
-                        <li><input type="checkbox"> Протяжка колесных болтов и проверка давления в шинах</li>
-                        <li><input type="checkbox"> Шприцевание крестовин, рулевых тяг и навески</li>
+                        <li><input type="checkbox" data-check-id="t1" onchange="saveChecklist()"> Замена моторного масла и фильтров перед сезоном</li>
+                        <li><input type="checkbox" data-check-id="t2" onchange="saveChecklist()"> Проверка уровня масла в гидравлике и КПП</li>
+                        <li><input type="checkbox" data-check-id="t3" onchange="saveChecklist()"> Протяжка колесных болтов и проверка давления в шинах</li>
+                        <li><input type="checkbox" data-check-id="t4" onchange="saveChecklist()"> Шприцевание крестовин, рулевых тяг и навески</li>
                     </ul>
                 </div>
                 <div class="card">
                     <h3>Культиватор и почвообработка</h3>
                     <ul class="checklist">
-                        <li><input type="checkbox"> Проверка износа стрельчатых лап и стоек</li>
-                        <li><input type="checkbox"> Выставление рамы по горизонту на ровной площадке</li>
-                        <li><input type="checkbox"> Смазка подшипников опорных колес и катков</li>
+                        <li><input type="checkbox" data-check-id="k1" onchange="saveChecklist()"> Проверка износа стрельчатых лап и стоек</li>
+                        <li><input type="checkbox" data-check-id="k2" onchange="saveChecklist()"> Выставление рамы по горизонту на ровной площадке</li>
+                        <li><input type="checkbox" data-check-id="k3" onchange="saveChecklist()"> Смазка подшипников опорных колес и катков</li>
                     </ul>
                 </div>
                 <div class="card">
                     <h3>Прицеп и логистика урожая</h3>
                     <ul class="checklist">
-                        <li><input type="checkbox"> Проверка ступичных подшипников и тормозной системы</li>
-                        <li><input type="checkbox"> Герметичность бортов (особенно для мелкого зерна и семечки)</li>
-                        <li><input type="checkbox"> Исправность светотехники и страховочных цепей</li>
+                        <li><input type="checkbox" data-check-id="p1" onchange="saveChecklist()"> Проверка ступичных подшипников и тормозной системы</li>
+                        <li><input type="checkbox" data-check-id="p2" onchange="saveChecklist()"> Герметичность бортов (особенно для мелкого зерна и семечки)</li>
+                        <li><input type="checkbox" data-check-id="p3" onchange="saveChecklist()"> Исправность светотехники и страховочных цепей</li>
                     </ul>
                 </div>
             </div>
@@ -234,22 +263,42 @@
             </div>
         </section>
 
-        <!-- ВКЛАДКА 5: ПРОЕКТЫ СООБЩЕСТВА -->
+        <!-- ВКЛАДКА 5: ПРОЕКТЫ, ОПЫТ И АГРО-РУЛЕТКА -->
         <section id="projects" class="tab-content">
+            <!-- Агро-рулетка нишевых идей -->
+            <div class="roulette-box">
+                <div class="roulette-head">
+                    <div>
+                        <span class="badge badge-gold">🎲 Агро-рулетка идей</span>
+                        <h3 id="rouletteTitle">Нажми «Крутить идею», чтобы получить нишевую связку</h3>
+                    </div>
+                    <div class="roulette-actions">
+                        <button type="button" onclick="spinAgroRoulette()">🎲 Крутить идею</button>
+                        <button type="button" class="mini-btn" id="adoptIdeaBtn" style="display:none;" onclick="adoptRouletteIdea()">➕ Взять в проекты</button>
+                    </div>
+                </div>
+                <p id="rouletteDesc">Генератор подкидывает реальные идеи для малых и средних хозяйств, переработки и заработка на технике.</p>
+            </div>
+
             <div class="section-header">
-                <h2>Проекты и идеи участников</h2>
-                <input type="text" id="searchProject" placeholder="Поиск по проектам, направлению или автору..." onkeyup="filterProjects()">
+                <h2>Проекты, кейсы и стена опыта</h2>
+                <input type="text" id="searchProject" placeholder="Поиск по проектам, опыту или автору..." onkeyup="filterProjects()">
             </div>
 
             <div class="project-form-box">
-                <h3>Добавить свой проект</h3>
+                <h3>Добавить проект, кейс или урок из практики</h3>
                 <div class="project-form-grid">
-                    <input type="text" id="projTitle" placeholder="Название проекта (например: Сушилка для тыквенной семечки)">
-                    <input type="text" id="projCategory" placeholder="Направление (например: Переработка / Техника)">
-                    <input type="text" id="projAuthor" placeholder="Автор / команда (или Контакт)">
+                    <select id="projType">
+                        <option value="Проект / Идея">🚀 Проект / Идея</option>
+                        <option value="Успешный кейс">🏆 Успешный кейс</option>
+                        <option value="Факап / Урок">⚠️ Факап / Урок (грабли)</option>
+                    </select>
+                    <input type="text" id="projTitle" placeholder="Название (например: Сушилка для семечки)">
+                    <input type="text" id="projCategory" placeholder="Направление (Переработка / Техника / Поле)">
+                    <input type="text" id="projAuthor" placeholder="Автор / контакт">
                 </div>
-                <textarea id="projDesc" rows="3" placeholder="Кратко опишите цель проекта, что уже сделано и какая нужна помощь или партнерство..."></textarea>
-                <button onclick="addProject()">Опубликовать проект</button>
+                <textarea id="projDesc" rows="3" placeholder="Опишите суть: что сделали, какие цифры получились или на чём споткнулись..."></textarea>
+                <button onclick="addProject()">Опубликовать на стену</button>
             </div>
 
             <div class="cards" id="projectsList"></div>
