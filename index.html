@@ -1,4 +1,5 @@
 
+cat << 'EOF' > index.html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -16,6 +17,7 @@
                 <span class="brand-name">АгроБизнес Pro</span>
             </div>
             <div class="top-actions">
+                <a class="tg-header-link" href="https://t.me/AGROBUSINESS_PRO" target="_blank" rel="noopener noreferrer">📢 @AGROBUSINESS_PRO</a>
                 <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleTheme()">🌙 Гараж / Ночь</button>
                 <div class="auth-panel" id="authPanel">
                     <button class="auth-btn" onclick="openAuthModal('login')">Войти по почте</button>
@@ -315,7 +317,7 @@
         </section>
     </main>
 
-    <!-- Чат поддержки с автоответами и контактом 0639429569 -->
+    <!-- Чат поддержки с автоответами, TG @AGROBUSINESS_PRO и контактом 0639429569 -->
     <div class="support-widget">
         <button type="button" class="support-fab" id="supportFabBtn" onclick="toggleSupportChat()">💬 Поддержка</button>
         <div class="support-drawer" id="supportDrawer">
@@ -325,6 +327,7 @@
                     <div class="support-phone-row">
                         <span>Тел: <a href="tel:+380639429569">0639429569</a></span>
                         <button type="button" class="support-copy-btn" onclick="copySupportPhone()">Копировать</button>
+                        <a class="support-tg-badge" href="https://t.me/AGROBUSINESS_PRO" target="_blank" rel="noopener noreferrer">TG канал</a>
                     </div>
                 </div>
                 <button type="button" class="support-close-btn" onclick="toggleSupportChat()">✕</button>
@@ -334,7 +337,7 @@
                 <button type="button" class="support-chip" onclick="sendQuickSupport('Как посчитать прибыль и стресс-тест?')">Калькулятор</button>
                 <button type="button" class="support-chip" onclick="sendQuickSupport('Нормы высева и тыква на семечку')">Культуры и высев</button>
                 <button type="button" class="support-chip" onclick="sendQuickSupport('Бюджетный трактор и запчасти')">Тракторы и запчасти</button>
-                <button type="button" class="support-chip" onclick="sendQuickSupport('Связаться по телефону')">Позвонить / Связь</button>
+                <button type="button" class="support-chip" onclick="sendQuickSupport('Связаться по телефону или в Telegram')">TG и телефон</button>
             </div>
 
             <div class="support-messages" id="supportMessages"></div>

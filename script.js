@@ -1,4 +1,5 @@
 
+cat << 'EOF' > script.js
 // --- ТЕМА: ПОЛЕ (ДЕНЬ) / ГАРАЖ (НОЧЬ) ---
 function applySavedTheme() {
     const saved = localStorage.getItem('agroTheme');
@@ -435,12 +436,13 @@ function deleteNote(index) {
     renderNotes();
 }
 
-// --- ЧАТ ПОДДЕРЖКИ С АВТООТВЕТАМИ И КОНТАКТОМ 0639429569 ---
+// --- ЧАТ ПОДДЕРЖКИ С АВТООТВЕТАМИ, TG @AGROBUSINESS_PRO И КОНТАКТОМ 0639429569 ---
 const SUPPORT_PHONE = '0639429569';
+const SUPPORT_TG = 'https://t.me/AGROBUSINESS_PRO';
 let supportHistory = JSON.parse(localStorage.getItem('agroSupportChat')) || [
     {
         sender: 'bot',
-        text: `Привет! Это автопомощник АгроБизнес Pro. Задай вопрос по культурам, калькуляторам, технике или нажми кнопку связи — телефон для связи: ${SUPPORT_PHONE}.`
+        text: `Привет! Это автопомощник АгроБизнес Pro. Задай вопрос по культурам, калькуляторам, технике или загляни в наш TG-канал @AGROBUSINESS_PRO (${SUPPORT_TG}). Телефон для связи: ${SUPPORT_PHONE}.`
     }
 ];
 
@@ -456,27 +458,27 @@ function copySupportPhone() {
     if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(SUPPORT_PHONE).catch(() => {});
     }
-    pushSupportMessage('bot', `Номер ${SUPPORT_PHONE} скопирован. Также можно позвонить по ссылке tel:+38${SUPPORT_PHONE}.`);
+    pushSupportMessage('bot', `Номер ${SUPPORT_PHONE} скопирован. Также можно написать в Telegram @AGROBUSINESS_PRO (${SUPPORT_TG}).`);
 }
 
 function getAutoReply(userText) {
     const q = userText.toLowerCase();
-    if (q.includes('телефон') || q.includes('позвон') || q.includes('связ') || q.includes('номер') || q.includes('контакт')) {
-        return `Прямой номер для связи: ${SUPPORT_PHONE} (нажмите на номер в шапке чата для вызова).`;
+    if (q.includes('телефон') || q.includes('позвон') || q.includes('связ') || q.includes('номер') || q.includes('контакт') || q.includes('tg') || q.includes('телеграм') || q.includes('канал')) {
+        return `Telegram-канал: @AGROBUSINESS_PRO (${SUPPORT_TG}). Прямой телефон для связи: ${SUPPORT_PHONE}.`;
     }
     if (q.includes('калькулятор') || q.includes('прибыл') || q.includes('стресс') || q.includes('семян') || q.includes('топлив') || q.includes('дт')) {
-        return `Во вкладке «Калькуляторы» можно посчитать прибыль с учётом стресс-теста («Засуха», «Обвал цены», «Жёсткий шторм»), а также расход семян и дизтоплива. По вопросам расчётов звоните: ${SUPPORT_PHONE}.`;
+        return `Во вкладке «Калькуляторы» можно посчитать прибыль с учётом стресс-теста («Засуха», «Обвал цены», «Жёсткий шторм»), а также расход семян и дизтоплива. Связь: ${SUPPORT_PHONE}, канал: @AGROBUSINESS_PRO.`;
     }
     if (q.includes('тыкв') || q.includes('культур') || q.includes('высев') || q.includes('пшениц') || q.includes('ячмен') || q.includes('подсолнеч')) {
-        return `Во вкладке «Культуры» собраны нормы высева, урожайность и нюансы по тыкве на семечку, подсолнечнику, пшенице и ячменю. Нужна консультация? Тел: ${SUPPORT_PHONE}.`;
+        return `Во вкладке «Культуры» собраны нормы высева, урожайность и нюансы по тыкве на семечку, подсолнечнику, пшенице и ячменю. Канал: @AGROBUSINESS_PRO (${SUPPORT_TG}), тел: ${SUPPORT_PHONE}.`;
     }
     if (q.includes('трактор') || q.includes('запчаст') || q.includes('ремн') || q.includes('гидравл') || q.includes('навеск') || q.includes('то')) {
-        return `Смотри вкладку «Бюджетные тракторы и запчасти» и чек-лист «Техника и ТО» (галочки повышают процент готовности к сезону). Для связи по технике: ${SUPPORT_PHONE}.`;
+        return `Смотри вкладку «Бюджетные тракторы и запчасти» и чек-лист «Техника и ТО». Обсудить технику можно в @AGROBUSINESS_PRO или по телефону ${SUPPORT_PHONE}.`;
     }
     if (q.includes('проект') || q.includes('рулетк') || q.includes('аккаунт') || q.includes('почт') || q.includes('гараж')) {
-        return `Во вкладке «Проекты и Опыт» есть Агро-рулетка идей и стена кейсов/факапов, вверху — переключатель «Гараж / Ночь» и вход по почте. Если нужна помощь напрямую — ${SUPPORT_PHONE}.`;
+        return `Во вкладке «Проекты и Опыт» есть Агро-рулетка идей и стена кейсов/факапов, вверху — переключатель «Гараж / Ночь» и ссылка на @AGROBUSINESS_PRO. Тел: ${SUPPORT_PHONE}.`;
     }
-    return `Принял сообщение! Если нужен быстрый ответ или обсудить детали лично — свяжитесь по телефону ${SUPPORT_PHONE}.`;
+    return `Принял сообщение! Подписывайся на @AGROBUSINESS_PRO (${SUPPORT_TG}) или звони по номеру ${SUPPORT_PHONE}.`;
 }
 
 function pushSupportMessage(sender, text) {
