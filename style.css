@@ -13,12 +13,12 @@ header { background: var(--primary); color: white; padding: 2rem 1rem 0; text-al
 header h1 { margin: 0; font-size: 2rem; }
 header p { margin: 0.5rem 0 1.5rem; opacity: 0.9; }
 
-.tabs { display: flex; justify-content: center; gap: 0.5rem; flex-wrap: wrap; max-width: 1040px; margin: 0 auto; }
+.tabs { display: flex; justify-content: center; gap: 0.5rem; flex-wrap: wrap; max-width: 1080px; margin: 0 auto; }
 .tab-btn { background: rgba(255,255,255,0.12); color: white; border: none; padding: 0.8rem 1.2rem; border-radius: 8px 8px 0 0; cursor: pointer; font-size: 1rem; font-weight: 600; transition: 0.2s; }
 .tab-btn:hover { background: rgba(255,255,255,0.25); }
 .tab-btn.active { background: var(--bg); color: var(--primary); }
 
-main { max-width: 1040px; margin: 2rem auto; padding: 0 1rem; }
+main { max-width: 1080px; margin: 2rem auto; padding: 0 1rem; }
 .tab-content { display: none; animation: fadeIn 0.25s ease; }
 .tab-content.active { display: block; }
 
@@ -26,7 +26,7 @@ main { max-width: 1040px; margin: 2rem auto; padding: 0 1rem; }
 
 .section-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; }
 .section-header h2 { margin: 0; }
-#searchCrop, #searchTractor { max-width: 380px; padding: 0.6rem 0.9rem; border: 1px solid #cbd5c9; border-radius: 6px; font-size: 0.95rem; }
+#searchCrop, #searchTractor, #searchProject { max-width: 380px; padding: 0.6rem 0.9rem; border: 1px solid #cbd5c9; border-radius: 6px; font-size: 0.95rem; }
 .sub-heading { margin: 2rem 0 1rem; color: var(--primary-dark); }
 
 .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 1.2rem; }
@@ -37,7 +37,7 @@ main { max-width: 1040px; margin: 2rem auto; padding: 0 1rem; }
 .calc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
 .calc-box { background: var(--card-bg); padding: 1.5rem; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); display: flex; flex-direction: column; gap: 0.8rem; }
 .calc-box h3 { margin: 0 0 0.4rem; color: var(--primary-dark); }
-input[type="number"], input[type="text"] { width: 100%; padding: 0.55rem; margin-top: 0.25rem; border: 1px solid #cbd5c9; border-radius: 6px; box-sizing: border-box; font-size: 1rem; }
+input[type="number"], input[type="text"], textarea { width: 100%; padding: 0.55rem; margin-top: 0.25rem; border: 1px solid #cbd5c9; border-radius: 6px; box-sizing: border-box; font-size: 1rem; font-family: inherit; }
 button { background: var(--primary); color: white; border: none; padding: 0.8rem 1.2rem; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 0.95rem; }
 button:hover { background: var(--primary-dark); }
 .result-box { background: #eef6ed; border-left: 4px solid var(--primary); padding: 0.8rem; font-weight: bold; border-radius: 4px; margin-top: 0.3rem; }
@@ -45,6 +45,12 @@ button:hover { background: var(--primary-dark); }
 .checklist { list-style: none; padding: 0; margin: 0; }
 .checklist li { padding: 0.5rem 0; border-bottom: 1px solid #eef2ed; display: flex; align-items: center; gap: 0.6rem; }
 .checklist li:last-child { border-bottom: none; }
+
+.project-form-box { background: var(--card-bg); padding: 1.5rem; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 1.5rem; display: flex; flex-direction: column; gap: 0.8rem; }
+.project-form-box h3 { margin: 0; color: var(--primary-dark); }
+.project-form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.8rem; }
+.project-meta { font-size: 0.85rem; color: #526350; margin-top: 0.8rem; }
+.project-actions { margin-top: 1rem; display: flex; justify-content: flex-end; }
 
 .note-form { display: flex; gap: 0.6rem; margin-bottom: 1.2rem; }
 .note-form input { margin-top: 0; }

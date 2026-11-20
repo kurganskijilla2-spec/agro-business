@@ -16,6 +16,7 @@
             <button class="tab-btn" onclick="openTab('calc', this)">🧮 Калькуляторы</button>
             <button class="tab-btn" onclick="openTab('tech', this)">🚜 Техника и ТО</button>
             <button class="tab-btn" onclick="openTab('budget-tractors', this)">🔧 Бюджетные тракторы и запчасти</button>
+            <button class="tab-btn" onclick="openTab('projects', this)">🚀 Проекты</button>
             <button class="tab-btn" onclick="openTab('notes', this)">📓 Агро-журнал</button>
         </nav>
     </header>
@@ -175,7 +176,28 @@
             </div>
         </section>
 
-        <!-- ВКЛАДКА 5: АГРО-ЖУРНАЛ -->
+        <!-- ВКЛАДКА 5: ПРОЕКТЫ СООБЩЕСТВА -->
+        <section id="projects" class="tab-content">
+            <div class="section-header">
+                <h2>Проекты и идеи участников</h2>
+                <input type="text" id="searchProject" placeholder="Поиск по проектам, направлению или автору..." onkeyup="filterProjects()">
+            </div>
+
+            <div class="project-form-box">
+                <h3>Добавить свой проект</h3>
+                <div class="project-form-grid">
+                    <input type="text" id="projTitle" placeholder="Название проекта (например: Сушилка для тыквенной семечки)">
+                    <input type="text" id="projCategory" placeholder="Направление (например: Переработка / Техника)">
+                    <input type="text" id="projAuthor" placeholder="Автор / команда (или Контакт)">
+                </div>
+                <textarea id="projDesc" rows="3" placeholder="Кратко опишите цель проекта, что уже сделано и какая нужна помощь или партнерство..."></textarea>
+                <button onclick="addProject()">Опубликовать проект</button>
+            </div>
+
+            <div class="cards" id="projectsList"></div>
+        </section>
+
+        <!-- ВКЛАДКА 6: АГРО-ЖУРНАЛ -->
         <section id="notes" class="tab-content">
             <h2>Журнал работ и расходов</h2>
             <p class="subtitle">Записи сохраняются в памяти вашего браузера.</p>
