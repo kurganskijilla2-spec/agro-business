@@ -5,21 +5,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>АгроБизнес Pro — Справочник, калькуляторы и журнал фермера</title>
+    <link rel="icon" type="image/png" href="images/logo.png">
     <link rel="stylesheet" href="style.css">
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#2d5a27">
 </head>
 <body>
     <header>
         <div class="top-bar">
+            <div class="brand-mini">
+                <img src="images/logo.png" alt="Логотип АгроБизнес Pro" class="site-logo">
+                <span class="brand-name">АгроБизнес Pro</span>
+            </div>
             <div class="auth-panel" id="authPanel">
                 <button class="auth-btn" onclick="openAuthModal('login')">Войти по почте</button>
                 <button class="auth-btn auth-btn-outline" onclick="openAuthModal('register')">Создать аккаунт</button>
             </div>
         </div>
 
-        <h1>АгроБизнес Pro</h1>
-        <p>Практический портал для фермеров: нишевые культуры, расчеты и учет</p>
+        <div class="hero-brand">
+            <img src="images/logo.png" alt="АгроБизнес Pro" class="hero-logo">
+            <div>
+                <h1>АгроБизнес Pro</h1>
+                <p>Практический портал для фермеров: нишевые культуры, расчеты и учет</p>
+            </div>
+        </div>
+
         <nav class="tabs">
             <button class="tab-btn active" onclick="openTab('crops', this)">🌱 Культуры</button>
             <button class="tab-btn" onclick="openTab('calc', this)">🧮 Калькуляторы</button>
@@ -67,32 +76,44 @@
             </div>
             <div class="cards" id="cropCards">
                 <div class="card crop-item">
-                    <span class="badge">Высокая маржа</span>
-                    <h3>Тыква на семечку (сорт Ольга и др.)</h3>
-                    <p><strong>Норма высева:</strong> 4–5 кг/га (схема 70×70 или 140×70 см).</p>
-                    <p><strong>Урожайность:</strong> 700–1100 кг сухой семечки с 1 га.</p>
-                    <p><strong>Нюанс:</strong> Критически важна своевременная сушка после комбайна, чтобы семечка не потемнела.</p>
+                    <img src="images/pumpkin.jpg" alt="Тыква на семечку" class="crop-photo">
+                    <div class="card-body">
+                        <span class="badge">Высокая маржа</span>
+                        <h3>Тыква на семечку (сорт Ольга и др.)</h3>
+                        <p><strong>Норма высева:</strong> 4–5 кг/га (схема 70×70 или 140×70 см).</p>
+                        <p><strong>Урожайность:</strong> 700–1100 кг сухой семечки с 1 га.</p>
+                        <p><strong>Нюанс:</strong> Критически важна своевременная сушка после комбайна, чтобы семечка не потемнела.</p>
+                    </div>
                 </div>
                 <div class="card crop-item">
-                    <span class="badge">Классика</span>
-                    <h3>Подсолнечник</h3>
-                    <p><strong>Норма высева:</strong> 55–65 тыс. семян/га (около 4–6 кг/га).</p>
-                    <p><strong>Урожайность:</strong> 20–32 ц/га.</p>
-                    <p><strong>Нюанс:</strong> Возвращать на то же поле не раньше чем через 6–7 лет из-за заразихи и болезней.</p>
+                    <img src="images/sunflower.jpg" alt="Подсолнечник" class="crop-photo">
+                    <div class="card-body">
+                        <span class="badge">Классика</span>
+                        <h3>Подсолнечник</h3>
+                        <p><strong>Норма высева:</strong> 55–65 тыс. семян/га (около 4–6 кг/га).</p>
+                        <p><strong>Урожайность:</strong> 20–32 ц/га.</p>
+                        <p><strong>Нюанс:</strong> Возвращать на то же поле не раньше чем через 6–7 лет из-за заразихи и болезней.</p>
+                    </div>
                 </div>
                 <div class="card crop-item">
-                    <span class="badge">Севооборот</span>
-                    <h3>Озимая пшеница</h3>
-                    <p><strong>Норма высева:</strong> 180–220 кг/га.</p>
-                    <p><strong>Урожайность:</strong> 40–60 ц/га.</p>
-                    <p><strong>Нюанс:</strong> Отличный предшественник для бахчевых и пропашных культур, хорошо очищает поле от сорняков.</p>
+                    <img src="images/wheat.jpg" alt="Озимая пшеница" class="crop-photo">
+                    <div class="card-body">
+                        <span class="badge">Севооборот</span>
+                        <h3>Озимая пшеница</h3>
+                        <p><strong>Норма высева:</strong> 180–220 кг/га.</p>
+                        <p><strong>Урожайность:</strong> 40–60 ц/га.</p>
+                        <p><strong>Нюанс:</strong> Отличный предшественник для бахчевых и пропашных культур, хорошо очищает поле от сорняков.</p>
+                    </div>
                 </div>
                 <div class="card crop-item">
-                    <span class="badge">Кормовая / Зерновая</span>
-                    <h3>Яровой ячмень</h3>
-                    <p><strong>Норма высева:</strong> 160–200 кг/га.</p>
-                    <p><strong>Урожайность:</strong> 30–45 ц/га.</p>
-                    <p><strong>Нюанс:</strong> Короткий период вегетации, ранняя уборка позволяет успеть провести зяблевую вспашку или культивацию.</p>
+                    <img src="images/barley.jpg" alt="Яровой ячмень" class="crop-photo">
+                    <div class="card-body">
+                        <span class="badge">Кормовая / Зерновая</span>
+                        <h3>Яровой ячмень</h3>
+                        <p><strong>Норма высева:</strong> 160–200 кг/га.</p>
+                        <p><strong>Урожайность:</strong> 30–45 ц/га.</p>
+                        <p><strong>Нюанс:</strong> Короткий период вегетации, ранняя уборка позволяет успеть провести зяблевую вспашку или культивацию.</p>
+                    </div>
                 </div>
             </div>
         </section>
